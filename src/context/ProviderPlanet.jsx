@@ -96,11 +96,23 @@ function ProviderPlanet(props) {
         ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
       );
       setSelectedFilter([]);
+      buildTable(fetchPlanets.results);
     } else {
       const add = selectedFilter.filter((s) => s[0] === argument);
       setNumeralFilters([...numeralFilters, add[0][0]]);
       const removeSelected = selectedFilter.filter((s) => s[0] !== argument);
       setSelectedFilter(removeSelected);
+      if (removeSelected.length === 0) {
+        buildTable(fetchPlanets.results);
+      }
+      removeSelected.forEach((item, index) => {
+        console.log(item, index);
+        if (index === 0) {
+          filteredByData(item[0], item[1], Number(item[2]), fetchPlanets.results);
+        } else {
+          filteredByData(item[0], item[1], Number(item[2]), filteredList);
+        }
+      });
     }
   };
 
