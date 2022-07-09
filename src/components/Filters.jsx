@@ -6,7 +6,25 @@ function Filters() {
   const [comparisonFilter, setcomparisonFilter] = useState('maior que');
   const [number, setNumber] = useState(0);
   const state = useContext(contextPlanet);
-  const { planetFilter, filterByName, filter3, numeralFilters } = state;
+  const {
+    planetFilter,
+    filterByName,
+    filter3,
+    numeralFilters,
+    selectedFilter,
+    restoreFilters,
+  } = state;
+
+  const removeAllFilters = () => (
+    <button
+      type="button"
+      data-testid="button-remove-filters"
+      onClick={ () => restoreFilters('all') }
+    >
+      Remover todos os filtros
+    </button>
+  );
+
   return (
     <div>
       <div>
@@ -48,10 +66,33 @@ function Filters() {
         <button
           type="button"
           data-testid="button-filter"
-          onClick={ () => filter3(columnFilter, comparisonFilter, number) }
+          onClick={ () => {
+            setColumnFilter(numeralFilters[1]);
+            filter3(columnFilter, comparisonFilter, number);
+          } }
         >
           Filtrar
         </button>
+      </div>
+      <div>
+        {
+          selectedFilter.length > 0 && selectedFilter.map((filter, index) => (
+            <div key={ index } data-testid="filter">
+              {`${filter[0]} ${filter[1]} ${filter[2]}`}
+              <button
+                type="button"
+                onClick={ () => restoreFilters(filter[0]) }
+              >
+                Apagar
+              </button>
+            </div>
+          ))
+        }
+      </div>
+      <div>
+        {
+          selectedFilter.length > 0 && removeAllFilters()
+        }
       </div>
     </div>
   );

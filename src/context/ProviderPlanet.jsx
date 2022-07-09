@@ -5,6 +5,7 @@ import contextPlanet from './contextPlanet';
 function ProviderPlanet(props) {
   const [filterByName, setFilterByName] = useState('');
   const [fetchPlanets, setFetchPlanets] = useState({});
+  const [selectedFilter, setSelectedFilter] = useState([]);
   const [numeralFilters, setNumeralFilters] = useState(
     ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
   );
@@ -84,6 +85,23 @@ function ProviderPlanet(props) {
       const newNumeralFilters = numeralFilters.filter((num) => num !== columnFilter);
       setNumeralFilters(newNumeralFilters);
     }
+    setSelectedFilter(
+      [...selectedFilter, [columnFilter, comparisonFilter, number]],
+    );
+  };
+
+  const restoreFilters = (argument) => {
+    if (argument === 'all') {
+      setNumeralFilters(
+        ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+      );
+      setSelectedFilter([]);
+    } else {
+      const add = selectedFilter.filter((s) => s[0] === argument);
+      setNumeralFilters([...numeralFilters, add[0][0]]);
+      const removeSelected = selectedFilter.filter((s) => s[0] !== argument);
+      setSelectedFilter(removeSelected);
+    }
   };
 
   return (
@@ -95,6 +113,8 @@ function ProviderPlanet(props) {
         planetFilter,
         filter3,
         numeralFilters,
+        selectedFilter,
+        restoreFilters,
       } }
     >
       { children }
