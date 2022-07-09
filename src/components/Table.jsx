@@ -6,7 +6,7 @@ function App() {
   return (
     <table>
       <tr>
-        { state.showTopics }
+        { state.columns }
       </tr>
       { state.lines }
     </table>
