@@ -34,12 +34,15 @@ function ProviderPlanet(props) {
   };
 
   // Chamada na Fetch (ComponentDidMount())
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    const fetchApi = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-    const fetchJson = await fetchApi.json();
-    setFetchPlanets(fetchJson);
-    buildTable(fetchJson.results);
+  useEffect(() => {
+    const data = async () => {
+      const fetchApi = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
+      const fetchJson = await fetchApi.json();
+      setFetchPlanets(fetchJson);
+      buildTable(fetchJson.results);
+      console.log(fetchJson);
+    };
+    data();
   }, []);
 
   const planetFilter = ({ target }) => {
@@ -106,7 +109,6 @@ function ProviderPlanet(props) {
         buildTable(fetchPlanets.results);
       }
       removeSelected.forEach((item, index) => {
-        console.log(item, index);
         if (index === 0) {
           filteredByData(item[0], item[1], Number(item[2]), fetchPlanets.results);
         } else {
