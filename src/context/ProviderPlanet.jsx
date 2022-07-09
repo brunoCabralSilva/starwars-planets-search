@@ -4,6 +4,7 @@ import contextPlanet from './contextPlanet';
 
 function ProviderPlanet(props) {
   const [fetchPlanets, setFetchPlanets] = useState({});
+  const [filteredList, setFilteredList] = useState([]);
   const [columns, setColumns] = useState([]);
   const [filterByName, setFilterByName] = useState('');
   const [lines, setLines] = useState([]);
@@ -48,9 +49,9 @@ function ProviderPlanet(props) {
     }
   };
 
-  const filter3 = (columnFilter, comparisonFilter, number) => {
+  const filteredByData = (columnFilter, comparisonFilter, number, list) => {
     const numero = Number(number);
-    const lista = fetchPlanets.results.filter((r) => {
+    const lista = list.filter((r) => {
       const titles = Object.entries(r);
       const coluna = titles.filter((res) => res[0] === columnFilter);
       if (comparisonFilter === 'maior que') {
@@ -60,10 +61,19 @@ function ProviderPlanet(props) {
       } else if (Number((coluna[0][1])) === numero) return r;
       return null;
     });
+    setFilteredList(lista);
     if (lista.length === 0) {
       buildTable(fetchPlanets.results);
     } else {
       buildTable(lista);
+    }
+  };
+
+  const filter3 = (columnFilter, comparisonFilter, number) => {
+    if (filteredList.length === 0) {
+      filteredByData(columnFilter, comparisonFilter, number, fetchPlanets.results);
+    } else {
+      filteredByData(columnFilter, comparisonFilter, number, filteredList);
     }
   };
 
