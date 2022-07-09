@@ -6,7 +6,7 @@ function Filters() {
   const [comparisonFilter, setcomparisonFilter] = useState('maior que');
   const [number, setNumber] = useState(0);
   const state = useContext(contextPlanet);
-  const { planetFilter, filterByName, filter3 } = state;
+  const { planetFilter, filterByName, filter3, numeralFilters } = state;
   return (
     <div>
       <div>
@@ -24,11 +24,11 @@ function Filters() {
           onChange={ (e) => setColumnFilter(e.target.value) }
           value={ columnFilter }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {
+            numeralFilters.length > 0 && numeralFilters.map((filter, index) => (
+              <option value={ filter } key={ index }>{ filter }</option>
+            ))
+          }
         </select>
         <select
           data-testid="comparison-filter"

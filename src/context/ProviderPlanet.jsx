@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import contextPlanet from './contextPlanet';
 
 function ProviderPlanet(props) {
+  const [filterByName, setFilterByName] = useState('');
   const [fetchPlanets, setFetchPlanets] = useState({});
+  const [numeralFilters, setNumeralFilters] = useState(
+    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+  );
   const [filteredList, setFilteredList] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [filterByName, setFilterByName] = useState('');
   const [lines, setLines] = useState([]);
   const { children } = props;
 
@@ -75,6 +78,12 @@ function ProviderPlanet(props) {
     } else {
       filteredByData(columnFilter, comparisonFilter, number, filteredList);
     }
+    if (numeralFilters.length === 1) {
+      setNumeralFilters('');
+    } else {
+      const newNumeralFilters = numeralFilters.filter((num) => num !== columnFilter);
+      setNumeralFilters(newNumeralFilters);
+    }
   };
 
   return (
@@ -85,6 +94,7 @@ function ProviderPlanet(props) {
         filterByName,
         planetFilter,
         filter3,
+        numeralFilters,
       } }
     >
       { children }
